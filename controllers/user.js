@@ -3,7 +3,7 @@ const random = require('randomstring');
 const user = require('./utils/register');
 const Voters = require('../models/user');
 
-const router = new express.Router();
+const router = express.Router();
 
 router.post('/auth', async (req, res) => {
   const {
@@ -87,3 +87,5 @@ router.post('/vote', async (req, res) => {
     });
   }
 });
+
+module.exports = router;
