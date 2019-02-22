@@ -1,0 +1,10 @@
+{
+    "extends": "airbnb",
+    "rules": {
+        "camelcase": "off",
+        "no-underscore-dangle": "off",
+        "max-len": [2, 1000, 4, {
+            "ignoreUrls": true
+        }]
+    }
+}
