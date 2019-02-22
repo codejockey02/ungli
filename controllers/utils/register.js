@@ -22,11 +22,15 @@ exports.register = async (number, uid, name, gender, yob, co, house, street, vtc
   try {
     await newUser.save();
     return {
-      message: 'Registered',
+      error: false,
+      code: null,
+      output: 'Registered',
     };
   } catch (err) {
     return {
-      message: 'Unexpected Error Occurred',
+      error: true,
+      code: null,
+      output: 'Unexpected Error Occurred',
     };
   }
 };
