@@ -72,9 +72,10 @@ router.post('/auth', async (req, res) => {
   });
   if (otp !== check.otp) {
     res.json({
-      error: false,
+      error: true,
       code: null,
       output: 'OTP is Invalid',
+      user_token: null,
     });
   } else {
     const age = Number(yob);
@@ -84,6 +85,7 @@ router.post('/auth', async (req, res) => {
         error: true,
         code: null,
         output: 'Age is not enough to vote',
+        user_token: null,
       });
     } else {
       const token = random.generate({
@@ -91,14 +93,16 @@ router.post('/auth', async (req, res) => {
       });
       user.register(number, uid, name, gender, yob, co, house, street, vtc, po, dist, subdist, state, pc, dob, token)
         .then(() => res.json({
-          error: true,
+          error: false,
           code: null,
           output: 'Registered',
+          user_token: token,
         }))
         .catch(() => res.json({
           error: true,
           code: null,
           output: 'Unexpected Error Occurred',
+          user_token: null,
         }));
     }
   }
