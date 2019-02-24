@@ -147,4 +147,28 @@ router.post('/vote', async (req, res) => {
   }
 });
 
+router.post('/profile', async (req, res) => {
+  const {
+    token,
+  } = req.body;
+  try {
+    const pro = await Voters.findOne({
+      token,
+    });
+    res.json({
+      error: false,
+      code: null,
+      output: 'Found',
+      profile: pro,
+    });
+  } catch (err) {
+    res.json({
+      error: true,
+      code: null,
+      output: 'Error making database call',
+      profile: null,
+    });
+  }
+});
+
 module.exports = router;
