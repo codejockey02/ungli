@@ -198,4 +198,56 @@ router.post('/profile', async (req, res) => {
   }
 });
 
+router.post('/stats', async (req, res) => {
+  const {
+    c1,
+    c2,
+    c3,
+    c4,
+  } = req.body;
+  try {
+    let count1 = await Voters.count({
+      vote: c1,
+    });
+    let count2 = await Voters.count({
+      vote: c2,
+    });
+    let count3 = await Voters.count({
+      vote: c3,
+    });
+    let count4 = await Voters.count({
+      vote: c4,
+    });
+    if (count1 == null) {
+      count1 = 0;
+    }
+    if (count2 == null) {
+      count2 = 0;
+    }
+    if (count3 == null) {
+      count3 = 0;
+    }
+    if (count4 == null) {
+      count4 = 0;
+    }
+    const total = count1 + count2 + count3 + count4;
+    const first = (count1 / total) * 100;
+    const second = (count2 / total) * 100;
+    const third = (count3 / total) * 100;
+    const fourth = (count4 / total) * 100;
+    res.json({
+      error: false,
+      code: null,
+      output: 'Found',
+      stats: [first, second, third, fourth],
+    });
+  } catch (err) {
+    res.json({
+      error: true,
+      code: null,
+      output: 'Error making database call',
+      stats: null,
+    });
+  }
+});
 module.exports = router;
