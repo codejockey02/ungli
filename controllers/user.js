@@ -112,7 +112,7 @@ router.post('/auth', async (req, res) => {
         error: false,
         code: null,
         output: 'Already Registered',
-        token: verify.token,
+        user_token: verify.token,
       });
     } else {
       const token = random.generate({
@@ -250,4 +250,5 @@ router.post('/stats', async (req, res) => {
     });
   }
 });
+
 module.exports = router;
