@@ -212,6 +212,14 @@ router.post('/stats', async (req, res) => {
     c3,
     c4,
   } = req.body;
+  if (!c1 || !c2 || !c3 || !c4) {
+    res.json({
+      error: true,
+      code: null,
+      output: 'Empty Values',
+      stats: null,
+    });
+  }
   try {
     let count1 = await Voters.count({
       vote: c1,
@@ -246,7 +254,12 @@ router.post('/stats', async (req, res) => {
       error: false,
       code: null,
       output: 'Found',
-      stats: [first, second, third, fourth],
+      stats: {
+        c1: first,
+        c2: second,
+        c3: third,
+        c4: fourth,
+      },
     });
   } catch (err) {
     res.json({
