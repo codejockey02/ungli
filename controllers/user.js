@@ -108,6 +108,13 @@ router.post('/auth', async (req, res) => {
         user_token: null,
       });
     } else if (verify !== null) {
+      await Voters.updateOne({
+        uid,
+      }, {
+        $set: {
+          isVoted: false,
+        },
+      });
       res.json({
         error: false,
         code: null,
