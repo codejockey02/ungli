@@ -1,10 +1,11 @@
 const User = require('../../models/user');
 
-exports.register = async (number, uid, name, gender, yob, co, house, street, vtc, po, dist, subdist, state, pc, dob, token) => {
+exports.register = async (number, uid, name, age, gender, yob, co, house, street, vtc, po, dist, subdist, state, pc, dob, token) => {
   const newUser = new User({
     number,
     uid,
     name,
+    age,
     gender,
     yob,
     co,
@@ -18,6 +19,7 @@ exports.register = async (number, uid, name, gender, yob, co, house, street, vtc
     pc,
     dob,
     token,
+    isVoted: false,
   });
   try {
     await newUser.save();

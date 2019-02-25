@@ -4,6 +4,7 @@ const schema = mongoose.Schema({
   number: mongoose.Schema.Types.String,
   uid: mongoose.Schema.Types.String,
   name: mongoose.Schema.Types.String,
+  age: mongoose.Schema.Types.Number,
   gender: mongoose.Schema.Types.String,
   yob: mongoose.Schema.Types.String,
   co: mongoose.Schema.Types.String,

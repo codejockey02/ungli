@@ -21,7 +21,22 @@ router.post('/signup', async (req, res) => {
     otp,
   });
   try {
-    await newOTP.save();
+    const check = await Otp.findOne({
+      number,
+    }, {
+      otp: 1,
+    });
+    if (check === null) {
+      await newOTP.save();
+    } else {
+      await Otp.updateOne({
+        number,
+      }, {
+        $set: {
+          otp,
+        },
+      });
+    }
   } catch (err) {
     res.json({
       error: true,
@@ -70,6 +85,11 @@ router.post('/auth', async (req, res) => {
   }, {
     otp: 1,
   });
+  const verify = await Voters.findOne({
+    uid,
+  }, {
+    token: 1,
+  });
   if (otp !== check.otp) {
     res.json({
       error: true,
@@ -87,11 +107,18 @@ router.post('/auth', async (req, res) => {
         output: 'Age is not enough to vote',
         user_token: null,
       });
+    } else if (verify !== null) {
+      res.json({
+        error: false,
+        code: null,
+        output: 'Already Registered',
+        token: verify.token,
+      });
     } else {
       const token = random.generate({
         charset: 'alphanumeric',
       });
-      user.register(number, uid, name, gender, yob, co, house, street, vtc, po, dist, subdist, state, pc, dob, token)
+      user.register(number, uid, name, presentAge, gender, yob, co, house, street, vtc, po, dist, subdist, state, pc, dob, token)
         .then(() => res.json({
           error: false,
           code: null,
