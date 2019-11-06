@@ -80,18 +80,11 @@ router.post('/auth', async (req, res) => {
     pc,
     dob,
   } = req.body;
-  const check = await Otp.findOne({
-    number,
-  }, {
-    otp: 1,
-  });
   const verify = await Voters.findOne({
     uid,
   }, {
     token: 1,
   });
-  console.log(otp);
-  console.log(check.otp);
   const age = Number(yob);
   const presentAge = new Date().getFullYear() - age;
   if (presentAge < 18) {
