@@ -92,55 +92,46 @@ router.post('/auth', async (req, res) => {
   });
   console.log(otp);
   console.log(check.otp);
-  if (otp !== check.otp) {
+  const age = Number(yob);
+  const presentAge = new Date().getFullYear() - age;
+  if (presentAge < 18) {
     res.json({
       error: true,
       code: null,
-      output: 'OTP is Invalid',
+      output: 'Age is not enough to vote',
       user_token: null,
     });
+  } else if (verify !== null) {
+    await Voters.updateOne({
+      uid,
+    }, {
+      $set: {
+        isVoted: false,
+      },
+    });
+    res.json({
+      error: false,
+      code: null,
+      output: 'Already Registered',
+      user_token: verify.token,
+    });
   } else {
-    const age = Number(yob);
-    const presentAge = new Date().getFullYear() - age;
-    if (presentAge < 18) {
-      res.json({
-        error: true,
-        code: null,
-        output: 'Age is not enough to vote',
-        user_token: null,
-      });
-    } else if (verify !== null) {
-      await Voters.updateOne({
-        uid,
-      }, {
-        $set: {
-          isVoted: false,
-        },
-      });
-      res.json({
+    const token = random.generate({
+      charset: 'alphanumeric',
+    });
+    user.register(number, uid, name, presentAge, gender, yob, co, house, street, vtc, po, dist, subdist, state, pc, dob, token)
+      .then(() => res.json({
         error: false,
         code: null,
-        output: 'Already Registered',
-        user_token: verify.token,
-      });
-    } else {
-      const token = random.generate({
-        charset: 'alphanumeric',
-      });
-      user.register(number, uid, name, presentAge, gender, yob, co, house, street, vtc, po, dist, subdist, state, pc, dob, token)
-        .then(() => res.json({
-          error: false,
-          code: null,
-          output: 'Registered',
-          user_token: token,
-        }))
-        .catch(() => res.json({
-          error: true,
-          code: null,
-          output: 'Unexpected Error Occurred',
-          user_token: null,
-        }));
-    }
+        output: 'Registered',
+        user_token: token,
+      }))
+      .catch(() => res.json({
+        error: true,
+        code: null,
+        output: 'Unexpected Error Occurred',
+        user_token: null,
+      }));
   }
 });
 
