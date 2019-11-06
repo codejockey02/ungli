@@ -90,6 +90,8 @@ router.post('/auth', async (req, res) => {
   }, {
     token: 1,
   });
+  console.log(otp);
+  console.log(check.otp);
   if (otp !== check.otp) {
     res.json({
       error: true,
